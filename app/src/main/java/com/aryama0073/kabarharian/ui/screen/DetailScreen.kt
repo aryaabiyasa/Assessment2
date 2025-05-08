@@ -43,9 +43,11 @@ import androidx.navigation.compose.rememberNavController
 import com.aryama0073.kabarharian.R
 import com.aryama0073.kabarharian.ui.theme.KabarHarianTheme
 
+const val KEY_ID_CATATAN = "idCatatan"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen(navController: NavHostController) {
+fun DetailScreen(navController: NavHostController, id: Long? = null) {
     var nama by remember { mutableStateOf("") }
     var kabar by remember { mutableStateOf("") }
     var catatan by remember { mutableStateOf("") }
@@ -69,7 +71,10 @@ fun DetailScreen(navController: NavHostController) {
                     }
                 },
                 title = {
-                    Text(text = stringResource(id = R.string.tambah_catatan))
+                    if (id == null)
+                        Text(text = stringResource(id = R.string.tambah_catatan))
+                    else
+                        Text(text = stringResource(id = R.string.edit_catatan))
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -109,7 +114,9 @@ fun FormCatatan(
     modifier: Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxSize().padding(16.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         OutlinedTextField(
