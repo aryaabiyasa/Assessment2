@@ -1,7 +1,6 @@
 package com.aryama0073.kabarharian.ui.screen
 
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -115,11 +113,7 @@ fun ListItem(catatan: Catatan, onClick: () -> Unit) {
             overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.Bold
         )
-        Text(
-            text = catatan.kabar,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
+        Text(text = catatan.kabar)
         Text(
             text = catatan.catatan,
             maxLines = 2,

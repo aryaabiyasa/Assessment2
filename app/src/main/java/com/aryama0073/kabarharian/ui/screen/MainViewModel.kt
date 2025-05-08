@@ -40,6 +40,9 @@ class MainViewModel : ViewModel() {
             "Aku sakit hari ini",
             "2025-05-02 15:35:29"
         )
-
     )
+
+    fun getCatatan(id: Long): Catatan? {
+        return data.find { it.id == id }
+    }
 }
