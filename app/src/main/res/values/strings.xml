@@ -10,4 +10,6 @@
     <string name="simpan">Simpan</string>
     <string name="edit_catatan">Ubah catatan</string>
     <string name="invalid">Nama, Kabar dan isi catatan tidak boleh kosong</string>
+    <string name="lainnya">Opsi lainnya</string>
+    <string name="hapus">Hapus catatan</string>
 </resources>
