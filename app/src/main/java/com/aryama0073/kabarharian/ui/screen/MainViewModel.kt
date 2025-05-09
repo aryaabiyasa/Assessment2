@@ -16,7 +16,4 @@ class MainViewModel(dao: CatatanDao) : ViewModel() {
         initialValue = emptyList()
     )
 
-    fun getCatatan(id: Long): Catatan? {
-        return data.value.find { it.id == id }
-    }
 }
