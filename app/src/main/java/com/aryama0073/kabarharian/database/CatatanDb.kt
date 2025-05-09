@@ -24,7 +24,7 @@ abstract class CatatanDb : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         CatatanDb::class.java,
-                        "catatan3.db"
+                        "catatan.db"
                     ).build()
                     INSTANCE = instance
                 }

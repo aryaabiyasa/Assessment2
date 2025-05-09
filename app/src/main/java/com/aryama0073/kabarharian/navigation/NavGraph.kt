@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.aryama0073.kabarharian.ui.screen.DetailScreen
 import com.aryama0073.kabarharian.ui.screen.KEY_ID_CATATAN
 import com.aryama0073.kabarharian.ui.screen.MainScreen
+import com.aryama0073.kabarharian.ui.screen.RecycleScreen
 
 @Composable
 fun SetupNavGraph(navController: NavHostController = rememberNavController()) {
@@ -31,6 +32,9 @@ fun SetupNavGraph(navController: NavHostController = rememberNavController()) {
         ) { navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getLong(KEY_ID_CATATAN)
             DetailScreen(navController, id)
+        }
+        composable(route = Screen.Recycle.route) {
+            RecycleScreen(navController)
         }
     }
 }

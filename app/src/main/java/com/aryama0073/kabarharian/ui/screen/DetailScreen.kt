@@ -63,6 +63,7 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
     var nama by remember { mutableStateOf("") }
     var kabar by remember { mutableStateOf("") }
     var catatan by remember { mutableStateOf("") }
+    var isDeleted by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
 
     val radioOptions = listOf(
@@ -77,6 +78,7 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
         nama = data.nama
         kabar = data.kabar
         catatan = data.catatan
+        isDeleted = data.isDeleted
     }
 
     Scaffold(
@@ -102,26 +104,39 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 actions = {
-                    IconButton(onClick = {
-                        if (nama == "" || kabar == "" || catatan == "") {
-                            Toast.makeText(context, R.string.invalid, Toast.LENGTH_LONG).show()
-                            return@IconButton
+                    if (!isDeleted) {
+                        IconButton(onClick = {
+                            if (nama == "" || kabar == "" || catatan == "") {
+                                Toast.makeText(context, R.string.invalid, Toast.LENGTH_LONG).show()
+                                return@IconButton
+                            }
+                            if (id == null) {
+                                viewModel.insert(nama, kabar, catatan)
+                            } else {
+                                viewModel.update(id, nama, kabar, catatan)
+                            }
+                            navController.popBackStack() }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Check,
+                                contentDescription = stringResource(R.string.simpan),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
                         }
-                        if (id == null) {
-                            viewModel.insert(nama, kabar, catatan)
-                        } else {
-                            viewModel.update(id, nama, kabar, catatan)
-                        }
-                        navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Check,
-                            contentDescription = stringResource(R.string.simpan),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
                     }
                     if (id != null) {
-                        DeleteAction {
-                            showDialog = true
+                        if (isDeleted) {
+                            RecycleAction(
+                                {
+                                    showDialog = true
+                                }
+                            ) {
+                                viewModel.restore(id)
+                                navController.popBackStack()
+                            }
+                        } else {
+                            DeleteAction {
+                                showDialog = true
+                            }
                         }
                     }
                 }
@@ -140,12 +155,23 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
         )
 
         if (id != null && showDialog) {
-            DisplayAlertDialog(
-                onDismissRequest = { showDialog = false}) {
-                showDialog = false
-                viewModel.delete(id)
-                navController.popBackStack()
-            }
+            DisplayAlertDialogRecycle(
+                message = if (!isDeleted) {
+                    stringResource(R.string.pesan_recycle)
+                } else {
+                    stringResource(R.string.pesan_hapus)
+                },
+                onDismissRequest = { showDialog = false },
+                onConfirmation = {
+                    showDialog = false
+                    if (!isDeleted) {
+                        viewModel.delete(id)
+                    } else {
+                        viewModel.permDelete(id)
+                    }
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
@@ -244,6 +270,41 @@ fun DeleteAction(delete: () -> Unit) {
                 onClick = {
                     expanded = false
                     delete()
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun RecycleAction(permDelete: () -> Unit, restore: () -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    IconButton(onClick = { expanded = true }) {
+        Icon(
+            imageVector = Icons.Filled.MoreVert,
+            contentDescription = stringResource(R.string.lainnya),
+            tint = MaterialTheme.colorScheme.primary
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false}
+        ) {
+            DropdownMenuItem(
+                text = {
+                    Text(text = stringResource(id = R.string.restore))
+                },
+                onClick = {
+                    expanded = false
+                    restore()
+                }
+            )
+            DropdownMenuItem(
+                text = {
+                    Text(text = stringResource(id = R.string.hapus_permanen))
+                },
+                onClick = {
+                    expanded = false
+                    permDelete()
                 }
             )
         }

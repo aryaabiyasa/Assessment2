@@ -45,9 +45,22 @@ class DetailViewModel(private val dao: CatatanDao) : ViewModel() {
         }
     }
 
-    fun delete(id: Long) {
+    fun permDelete(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             dao.deleteById(id)
+        }
+    }
+
+    fun restore(id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.restore(
+                id)
+        }
+    }
+
+    fun delete(id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.softDelete(id)
         }
     }
 }

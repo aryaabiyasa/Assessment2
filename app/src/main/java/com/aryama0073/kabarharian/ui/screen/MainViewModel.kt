@@ -10,7 +10,13 @@ import kotlinx.coroutines.flow.stateIn
 
 class MainViewModel(dao: CatatanDao) : ViewModel() {
 
-    val data: StateFlow<List<Catatan>> = dao.getCatatan().stateIn(
+    val data: StateFlow<List<Catatan>> = dao.getIsiCatatan().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = emptyList()
+    )
+
+    val dataRecycle: StateFlow<List<Catatan>> = dao.getDeleteCatatan().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
         initialValue = emptyList()

@@ -10,5 +10,6 @@ data class Catatan (
     val nama: String,
     val kabar: String,
     val catatan: String,
-    val tanggal: String
+    val tanggal: String,
+    val isDeleted: Boolean = false
 )

@@ -1,4 +1,4 @@
-package com.aryama0073.kabarharian.ui
+package com.aryama0073.kabarharian
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

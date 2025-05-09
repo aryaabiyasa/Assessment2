@@ -31,6 +31,28 @@ fun DisplayAlertDialog(
     )
 }
 
+@Composable
+fun DisplayAlertDialogRecycle(
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+    message: String
+) {
+    AlertDialog(
+        text = { Text(text = message) },
+        confirmButton = {
+            TextButton(onClick = { onConfirmation() }) {
+                Text(text = stringResource(R.string.tombol_konfirmasi))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onDismissRequest() }) {
+                Text(text = stringResource(R.string.tombol_batal))
+            }
+        },
+        onDismissRequest = { onDismissRequest() }
+    )
+}
+
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable

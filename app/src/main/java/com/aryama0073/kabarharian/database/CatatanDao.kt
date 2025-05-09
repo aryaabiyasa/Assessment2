@@ -16,6 +16,12 @@ interface CatatanDao {
     @Update
     suspend fun update(catatan: Catatan)
 
+    @Query("SELECT * FROM catatan WHERE isDeleted = 1 ORDER BY id ASC")
+    fun getDeleteCatatan(): Flow<List<Catatan>>
+
+    @Query("SELECT * FROM catatan WHERE isDeleted = 0 ORDER BY id ASC")
+    fun getIsiCatatan(): Flow<List<Catatan>>
+
     @Query("SELECT * FROM catatan ORDER BY tanggal DESC")
     fun getCatatan(): Flow<List<Catatan>>
 
@@ -24,4 +30,10 @@ interface CatatanDao {
 
     @Query("DELETE FROM catatan WHERE id = :id")
     suspend fun deleteById(id: Long)
+
+    @Query("UPDATE catatan SET isDeleted = 1 WHERE id = :id")
+    suspend fun softDelete(id: Long)
+
+    @Query("UPDATE catatan SET isDeleted = 0 WHERE id = :id")
+    suspend fun restore(id: Long)
 }
